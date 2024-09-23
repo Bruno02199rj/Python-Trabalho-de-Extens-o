@@ -27,17 +27,17 @@ conn.close()
 @app.route('/')
 def index():
     database_path = os.path.join(os.path.dirname(__file__), 'gestao_pacientes.db')
-
     conn = sqlite3.connect(database_path)
-
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM paciente')
     pacientes = cursor.fetchall()
     conn.close()
+    
     return render_template ('index.html' , pacientes=pacientes)
 
 @app.route('/novo_paciente', methods=['GET','POST'])
 def novo_paciente():
+   
    if request.method == 'POST':
          nome = request.form['nome']
          idade = request.form['idade']
@@ -45,12 +45,10 @@ def novo_paciente():
          cpf = request.form['cpf']
          endereco = request.form['endereco']
          telefone = request.form['telefone']   
-         print(nome) 
-         database_path = os.path.join(os.path.dirname(__file__), 'gestao_pacientes.db')
 
+         database_path = os.path.join(os.path.dirname(__file__), 'gestao_pacientes.db')
          conn = sqlite3.connect(database_path)
 
-         conn = sqlite3.connect('gestao_pacientes.db')
          cursor = conn.cursor()
          cursor.execute('''
     INSERT or IGNORE INTO paciente (nome, idade ,sexo, cpf, endereco, telefone)
@@ -63,8 +61,8 @@ def novo_paciente():
 
 @app.route('/limpar_pacientes')
 def limpar_pacientes():
-    database_path = os.path.join(os.path.dirname(__file__), 'gestao_pacientes.db')
 
+    database_path = os.path.join(os.path.dirname(__file__), 'gestao_pacientes.db')
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
     cursor.execute('DELETE  FROM paciente')
